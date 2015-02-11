@@ -36,8 +36,8 @@ body {
     background-color: #3F312F;
     border: 1px solid #000;
     float: left;
-    height: 30px;
-    width: 15px;
+    height: 35px;
+    width: 20px;
 }
 
 .outer-display {
@@ -68,6 +68,10 @@ body {
     font-weight: bold;
     line-height: 1;
     text-align: center;
+}
+
+.operators span.red {
+    color: red;
 }
 
 .display-numbers {
@@ -103,16 +107,17 @@ body {
     padding: .3em;
 }
 
-.btn-number {
+.btn-number, .btn-operator {
     background-color: #8D93B7;
     height: 60px;
     padding: .5em;
 }
 
-.btn-number:nth-child(4n) {
+.number-pad .btn:nth-child(4n) {
     margin-left: 1rem;
     width: calc(25% - .8rem);
 }
+
 
 
 
