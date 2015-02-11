@@ -107,7 +107,7 @@ body {
     padding: .3em;
 }
 
-.btn-number, .btn-operator {
+.number-pad .btn {
     background-color: #8D93B7;
     height: 60px;
     padding: .5em;

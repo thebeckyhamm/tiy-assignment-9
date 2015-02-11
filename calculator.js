@@ -9,162 +9,162 @@
 
 
 // if operator is not undefined ; combine operatorFlag and operator
-
-
-$(function() {
-
-
-    var displayNumber = [];
+    var displayNumber = 0;
     var firstNumber;
     var secondNumber;
     var operatorFlag = false;
-    var operators = ["multiply", "divide", "add", "subtract"];
+    var operators = ["*", "/", "+", "-"];
     var operator;
+    var displayArea;
 
 
-    // var isOperator = function(item) {
-    //     operators.forEach(function(item){
-    //         if (item === "divide") {
-    //             operatorFlag = true;
-    //         }
-    //         else if (item === "multiply") {
-    //             operatorFlag = true;
-    //         }
-    //         else if (item === "add") {
-    //             operatorFlag = true;
-    //         }
-    //         else if (item === "subtract") {
-    //             operatorFlag = true;
-    //         }
-    //     });
-    //     return operatorFlag;
-    //     console.log("operator flag is " + operatorFlag);
-    // };
+var addButtons = function() {
+    var numberPadBtns = "123/456*789-0.=+".split("");
+    var numberPad = $(".number-pad").empty();
+    numberPadBtns.forEach(function(number) {
+        var btn = $("<a href=\"#\" class=\"btn\"></a>");
+        btn.text(number);
+        btn.data("name", number);
+        numberPad.append(btn);
+    });
+};
+
+
+var evaluateButtonPress = function(btn) {
+    if (btn === "clear") {
+        displayNumber = 0;
+        firstNumber = undefined;
+        secondNumber = undefined;
+        operator = undefined;
+
+        displayArea.empty().text(displayNumber);
+    }
+
+    else if (btn <= 9) {
+
+        if (firstNumber === undefined) {
+            displayNumber = btn; // add number to display's number
+            firstNumber = displayNumber; 
+            console.log("the first number is " + firstNumber);
+        }
+
+        else if (firstNumber !== undefined && operator === undefined) {
+            displayNumber += btn; // add number to display's number
+            firstNumber = displayNumber; 
+            console.log("the first number is " + firstNumber);
+        }
+
+        else if (secondNumber === undefined) {
+            displayNumber = []; 
+            displayNumber += btn;
+            secondNumber = displayNumber;
+            console.log("the second number is " + secondNumber);
+        }
+
+        else {
+            displayNumber += btn;
+            secondNumber = displayNumber;
+            console.log("the second number is " + secondNumber);
+        }
+        displayArea.text(displayNumber);
+    }
+
+    else if (_.contains(operators, btn)) {
+        operator = btn;
+        $(".operators span").removeClass("red");            
+        $(".operators [data-name='" + btn + "']").addClass("red");
+        console.log("the operator is: " + operator);
+    }
+
+    // else if (btn === "equals") { // NEED TO MAKE THIS DO ALL OPERATIONS
+    //     $(".operators span").removeClass("red");            
+    //     if (operator === "/") {
+    //         displayNumber = firstNumber / secondNumber;
+    //         firstNumber = displayNumber;
+
+    //         displayArea.text(displayNumber);
+    //         console.log("the total is " + displayNumber);
+
+    //     }
+    //     else if (operator === "*") {
+    //         displayNumber = firstNumber * secondNumber;
+    //         firstNumber = displayNumber;
+    //         displayArea.text(displayNumber);
+    //         console.log("the total is " + displayNumber);
+
+    //     }
+    //     if (operator === "-") {
+    //         displayNumber = firstNumber - secondNumber;
+    //         firstNumber = displayNumber;
+    //         displayArea.text(displayNumber);
+    //         console.log("the total is " + displayNumber);
+
+    //     }
+    //     if (operator === "+") {
+    //         displayNumber = parseFloat(firstNumber) + parseFloat(secondNumber);
+    //         firstNumber = displayNumber;
+    //         console.log(firstNumber, secondNumber, displayNumber);
+    //         displayArea.text(displayNumber);
+    //         console.log("the total is " + displayNumber);
+
+    //     }
+
+
+
+    // }
+
+    // else if (btn === "period") {
+    //     var period = ".";
+
+    //     if (firstNumber === undefined) {
+    //         displayNumber = "0" + period;
+    //         firstNumber = displayNumber;
+    //         console.log("the first number is " + firstNumber);
+    //         displayArea.text(displayNumber);
+    //     }
+    //     else if (firstNumber !== undefined && operatorFlag === false) {
+    //         displayNumber += period;
+    //         firstNumber = displayNumber;
+    //         console.log("the first number is " + firstNumber);
+    //         displayArea.text(displayNumber);
+
+    //     }
+    //     else {
+    //         displayNumber = []; 
+    //         displayNumber += period;
+    //         secondNumber = displayNumber;
+    //         displayArea.empty().text(displayNumber);
+    //         console.log("the second number is " + secondNumber);
+    //     }        
+    // }
+};
+
+
+
+
+$(function() {
+    displayArea = $(".display-numbers span");
+    addButtons();
+
 
     $(".number-pad").on("click", "a", function(event){
         event.preventDefault();
-        var btnValue = event.currentTarget;
-        var btnName = $(btnValue).data("name");
-        console.log(btnName);
+        var elem = event.currentTarget;
+        var btn = $(elem).data("name");
+        console.log(btn);
+
+        evaluateButtonPress(btn);
 
 
-        //isOperator(btnValue);
-        if (btnName === "clear") {
-            $(displayNumber).empty();
-            $(firstNumber).empty();
-            $(secondNumber).empty();
-        }
-        else if (btnName === "divide") {
-            operatorFlag = true;
-            operator = "/";
-            $(".operators span").removeClass("red");            
-            $(".operators [data-name='divide']").addClass("red");
-        }
-        else if (btnName === "multiply") {
-            operatorFlag = true;
-            operator = "*";
-            $(".operators span").removeClass("red");            
-            $(".operators [data-name='multiply']").addClass("red");
-        }
-        else if (btnName === "add") {
-            operatorFlag = true;
-            operator = "+";
-            $(".operators span").removeClass("red");            
-            $(".operators [data-name='add']").addClass("red");
+    });
 
-        }
-        else if (btnName === "subtract") {
-            operatorFlag = true;
-            operator = "-";
-            $(".operators span").removeClass("red");            
-            $(".operators [data-name='subtract']").addClass("red");
+    $(".btn-purple").on("click", function(event){
+        event.preventDefault();
+        var elem = event.currentTarget;
+        var btn = $(elem).data("name");
+        console.log(btn);
 
-        }
-        else if (btnName === "equals") { // NEED TO MAKE THIS DO ALL OPERATIONS
-            $(".operators span").removeClass("red");            
-            if (operator === "/") {
-                displayNumber = firstNumber / secondNumber;
-                firstNumber = displayNumber;
-                $(".display-numbers span").text(displayNumber.toFixed(6));
-                console.log("the total is " + displayNumber);
-
-            }
-            else if (operator === "*") {
-                displayNumber = firstNumber * secondNumber;
-                firstNumber = displayNumber;
-                $(".display-numbers span").text(displayNumber.toFixed(6));
-                console.log("the total is " + displayNumber);
-
-            }
-            if (operator === "-") {
-                displayNumber = firstNumber - secondNumber;
-                firstNumber = displayNumber;
-                $(".display-numbers span").text(displayNumber.toFixed(6));
-                console.log("the total is " + displayNumber);
-
-            }
-            if (operator === "+") {
-                displayNumber = parseFloat(firstNumber) + parseFloat(secondNumber);
-                firstNumber = displayNumber;
-                console.log(firstNumber, secondNumber, displayNumber);
-                $(".display-numbers span").text(displayNumber.toFixed(6));
-                console.log("the total is " + displayNumber);
-
-            }
-
-
-
-        }
-        else if (typeof btnName === "number") {
-
-            if (firstNumber === undefined) {
-                displayNumber += btnName;
-                firstNumber = displayNumber;
-                console.log("the first number is " + firstNumber);
-                $(".display-numbers span").text(displayNumber);
-
-            }
-            else if (firstNumber !== undefined && operatorFlag === false) {
-                displayNumber += btnName;
-                firstNumber = displayNumber;
-                console.log("the first number is " + firstNumber);
-                $(".display-numbers span").text(displayNumber);
-
-            }
-            else {
-                displayNumber = []; 
-                displayNumber += btnName;
-                secondNumber = displayNumber;
-                $(".display-numbers span").empty().text(displayNumber);
-                console.log("the second number is " + secondNumber);
-            }
-
-        }
-        else if (btnName === "period") {
-            var period = ".";
-
-            if (firstNumber === undefined) {
-                displayNumber = "0" + period;
-                firstNumber = displayNumber;
-                console.log("the first number is " + firstNumber);
-                $(".display-numbers span").text(displayNumber);
-            }
-            else if (firstNumber !== undefined && operatorFlag === false) {
-                displayNumber += period;
-                firstNumber = displayNumber;
-                console.log("the first number is " + firstNumber);
-                $(".display-numbers span").text(displayNumber);
-
-            }
-            else {
-                displayNumber = []; 
-                displayNumber += period;
-                secondNumber = displayNumber;
-                $(".display-numbers span").empty().text(displayNumber);
-                console.log("the second number is " + secondNumber);
-            }        
-        }
-
+        evaluateButtonPress(btn);
 
 
     });
